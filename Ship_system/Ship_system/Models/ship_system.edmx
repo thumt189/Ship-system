@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ship_systemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" />
+          <Property Name="password" Type="varchar" MaxLength="100" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="phone" Type="varchar" MaxLength="20" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+          <Property Name="address" Type="nvarchar" MaxLength="200" />
+          <Property Name="status" Type="int" />
+          <Property Name="note" Type="text" />
+          <Property Name="is_deleted" Type="int" />
+        </EntityType>
+        <EntityType Name="detail_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="order_id" Type="uniqueidentifier" />
+          <Property Name="product" Type="nvarchar" MaxLength="100" />
+          <Property Name="image" Type="varchar" MaxLength="100" />
+          <Property Name="price" Type="int" />
+          <Property Name="note" Type="text" />
+          <Property Name="is_deleted" Type="int" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="cus_id" Type="uniqueidentifier" />
+          <Property Name="shiper_id" Type="uniqueidentifier" />
+          <Property Name="note" Type="text" />
+          <Property Name="is_deleted" Type="int" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="order_id" Type="uniqueidentifier" />
+          <Property Name="contents" Type="text" />
+          <Property Name="note" Type="text" />
+          <Property Name="is_deleted" Type="int" />
+        </EntityType>
+        <Association Name="FK_detail_order_order">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="detail_order" Type="Self.detail_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detail_order">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_customer">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_customer1">
+          <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="shiper_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_review_order">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="review" Type="Self.review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="review">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ship_systemModelStoreContainer">
+          <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detail_order" EntityType="Self.detail_order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="review" EntityType="Self.review" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_detail_order_order" Association="Self.FK_detail_order_order">
+            <End Role="order" EntitySet="order" />
+            <End Role="detail_order" EntitySet="detail_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_customer" Association="Self.FK_order_customer">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_customer1" Association="Self.FK_order_customer1">
+            <End Role="customer" EntitySet="customer" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_review_order" Association="Self.FK_review_order">
+            <End Role="order" EntitySet="order" />
+            <End Role="review" EntitySet="review" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ship_systemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="is_deleted" Type="Int32" />
+          <NavigationProperty Name="orders" Relationship="ship_systemModel.FK_order_customer" FromRole="customer" ToRole="order" />
+          <NavigationProperty Name="orders1" Relationship="ship_systemModel.FK_order_customer1" FromRole="customer" ToRole="order" />
+        </EntityType>
+        <EntityType Name="detail_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="order_id" Type="Guid" />
+          <Property Name="product" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="is_deleted" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="ship_systemModel.FK_detail_order_order" FromRole="detail_order" ToRole="order" />
+          <Property Name="image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="cus_id" Type="Guid" />
+          <Property Name="shiper_id" Type="Guid" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="is_deleted" Type="Int32" />
+          <NavigationProperty Name="customer" Relationship="ship_systemModel.FK_order_customer" FromRole="order" ToRole="customer" />
+          <NavigationProperty Name="customer1" Relationship="ship_systemModel.FK_order_customer1" FromRole="order" ToRole="customer" />
+          <NavigationProperty Name="detail_order" Relationship="ship_systemModel.FK_detail_order_order" FromRole="order" ToRole="detail_order" />
+          <NavigationProperty Name="reviews" Relationship="ship_systemModel.FK_review_order" FromRole="order" ToRole="review" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="order_id" Type="Guid" />
+          <Property Name="contents" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="is_deleted" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="ship_systemModel.FK_review_order" FromRole="review" ToRole="order" />
+        </EntityType>
+        <EntityContainer Name="ship_systemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="customers" EntityType="Self.customer" />
+          <EntitySet Name="detail_order" EntityType="Self.detail_order" />
+          <EntitySet Name="orders" EntityType="Self.order" />
+          <EntitySet Name="reviews" EntityType="Self.review" />
+          <AssociationSet Name="FK_order_customer" Association="ship_systemModel.FK_order_customer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_customer1" Association="ship_systemModel.FK_order_customer1">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detail_order_order" Association="ship_systemModel.FK_detail_order_order">
+            <End Role="order" EntitySet="orders" />
+            <End Role="detail_order" EntitySet="detail_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_review_order" Association="ship_systemModel.FK_review_order">
+            <End Role="order" EntitySet="orders" />
+            <End Role="review" EntitySet="reviews" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_order_customer">
+          <End Type="ship_systemModel.customer" Role="customer" Multiplicity="0..1" />
+          <End Type="ship_systemModel.order" Role="order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_customer1">
+          <End Type="ship_systemModel.customer" Role="customer" Multiplicity="0..1" />
+          <End Type="ship_systemModel.order" Role="order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="shiper_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detail_order_order">
+          <End Type="ship_systemModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="ship_systemModel.detail_order" Role="detail_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="detail_order">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_review_order">
+          <End Type="ship_systemModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="ship_systemModel.review" Role="review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="review">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ship_systemModelStoreContainer" CdmEntityContainer="ship_systemEntities">
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="ship_systemModel.customer">
+              <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detail_order">
+            <EntityTypeMapping TypeName="ship_systemModel.detail_order">
+              <MappingFragment StoreEntitySet="detail_order">
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="product" ColumnName="product" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="ship_systemModel.order">
+              <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cus_id" ColumnName="cus_id" />
+                <ScalarProperty Name="shiper_id" ColumnName="shiper_id" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reviews">
+            <EntityTypeMapping TypeName="ship_systemModel.review">
+              <MappingFragment StoreEntitySet="review">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="contents" ColumnName="contents" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
